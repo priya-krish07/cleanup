@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}EcoPulse{% endblock %} · Community impact, measured</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+<nav class="nav"><a class="brand" href="{{ url_for('index') }}"><span class="brand-mark"><i class="fa-solid fa-leaf"></i></span><span>Eco<span class="green">Pulse</span></span></a><button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><i class="fa-solid fa-bars"></i></button><div class="nav-links"><a href="{{ url_for('events') }}">Events</a><a href="{{ url_for('impact') }}">Impact</a><a href="{{ url_for('leaderboard') }}">Leaderboard</a>{% if current_user and current_user.role == 'admin' %}<a href="{{ url_for('dashboard') }}">Command center</a><a href="{{ url_for('waste_tracker') }}">Waste tracker</a>{% endif %}<span class="nav-divider"></span>{% if current_user %}<a class="user-chip" href="{{ url_for('profile') }}"><span>{{ current_user.name[0] }}</span>{{ current_user.name.split()[0] }}</a><a class="text-link" href="{{ url_for('logout') }}">Log out</a>{% else %}<a class="text-link" href="{{ url_for('login') }}">Log in</a><a class="button button-small" href="{{ url_for('register') }}">Join the movement <i class="fa-solid fa-arrow-up-right-from-square"></i></a>{% endif %}</div></nav>
+<main>{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-wrap">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}<button onclick="this.parentElement.remove()">&times;</button></div>{% endfor %}</div>{% endif %}{% endwith %}{% block content %}{% endblock %}</main>
+<footer><div class="brand"><span class="brand-mark"><i class="fa-solid fa-leaf"></i></span><span>Eco<span class="green">Pulse</span></span></div><span>Small actions. Cleaner communities. Bigger impact.</span><span>© {{ year }} EcoPulse</span></footer>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script><script src="{{ url_for('static', filename='js/script.js') }}"></script>{% block scripts %}{% endblock %}
+</body></html>
